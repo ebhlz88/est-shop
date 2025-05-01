@@ -1,4 +1,5 @@
 build:
-	@go build -o ./bin/pricefetcher
+	go build -o ./bin/pricefetcher ./cmd/api
+
 run: build
 	./bin/pricefetcher

@@ -1,0 +1,18 @@
+/home/emad/go/test/
+├── cmd/
+│   └── api.go       ← entry point (main package)
+├── handler/
+│   └── product_handler.go 
+├── models/
+│   └── product.go 
+├── server/
+│   └── server.go
+│   └── router.go  
+├── store/
+│   └── product_repo.go
+│   └── store.go  
+├── utils/
+│   └── utils.go 
+├── Makefile         ← build + run commands
+├── go.mod
+└── (other packages like /server, /store, /handler, etc.)

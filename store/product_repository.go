@@ -1,47 +1,6 @@
-package main
+package store
 
-import (
-	"database/sql"
-
-	_ "github.com/lib/pq"
-)
-
-type PostgresStore struct {
-	db *sql.DB
-}
-
-func NewPostgresStore() (*PostgresStore, error) {
-	connStr := "user=user dbname=mydatabase password=mysecretpassword sslmode=disable"
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		return nil, err
-	}
-	if err := db.Ping(); err != nil {
-		return nil, err
-	}
-	return &PostgresStore{
-		db: db,
-	}, nil
-}
-
-func (s *PostgresStore) InitTables() error {
-	if err := s.CreateProductTable(); err != nil {
-		return err
-	}
-	if err := s.CreateOrderTable(); err != nil {
-		return err
-	}
-	if err := s.CreateProfitTable(); err != nil {
-		return err
-	}
-	if err := s.CreateStockTable(); err != nil {
-		return err
-	}
-	if err := s.CreateInvestorTable(); err != nil {
-		return err
-	}
-	return nil
-}
+import "github.com/ebhlz88/est-shop/models"
 
 func (s *PostgresStore) CreateProductTable() error {
 	query := `create table if not exists product(
@@ -126,8 +85,8 @@ func (s *PostgresStore) DeleteProduct(productId int) error {
 	return err
 }
 
-func (s *PostgresStore) GetProductById(productId int) (Product, error) {
-	var p Product
+func (s *PostgresStore) GetProductById(productId int) (models.Product, error) {
+	var p models.Product
 	query := `SELECT product_id, product_name, product_buy_price, product_sell_price
 			  FROM product
 			  WHERE product_id = $1`
@@ -135,7 +94,7 @@ func (s *PostgresStore) GetProductById(productId int) (Product, error) {
 	return p, err
 }
 
-func (s *PostgresStore) GetAllProducts() ([]Product, error) {
+func (s *PostgresStore) GetAllProducts() ([]models.Product, error) {
 	query := `SELECT product_id, product_name, product_buy_price, product_sell_price
 			  FROM product`
 	rows, err := s.db.Query(query)
@@ -144,9 +103,9 @@ func (s *PostgresStore) GetAllProducts() ([]Product, error) {
 	}
 	defer rows.Close()
 
-	var products []Product
+	var products []models.Product
 	for rows.Next() {
-		var p Product
+		var p models.Product
 		err := rows.Scan(&p.ProductId, &p.ProductName, &p.ProductBuyPrice, &p.ProductSellPrice)
 		if err != nil {
 			return nil, err
