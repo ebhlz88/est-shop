@@ -6,7 +6,7 @@ import (
 )
 
 type APIError struct {
-	Error error
+	Error string
 }
 
 type APISuccessMessage struct {

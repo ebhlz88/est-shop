@@ -25,6 +25,9 @@ func NewPostgresStore() (*PostgresStore, error) {
 }
 
 func (s *PostgresStore) InitTables() error {
+	if err := s.CreateUserTable(); err != nil {
+		return err
+	}
 	if err := s.CreateProductTable(); err != nil {
 		return err
 	}

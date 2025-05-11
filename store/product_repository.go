@@ -17,20 +17,6 @@ func (s *PostgresStore) CreateProductTable() error {
 	return nil
 }
 
-func (s *PostgresStore) CreateOrderTable() error {
-	query := `create table if not exists orders (
-	order_id serial primary key,
-	product_id int references product(product_id),
-	amount numeric,
-	is_profit_distrubuted boolean
-	)`
-	_, err := s.db.Exec(query)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func (s *PostgresStore) CreateProfitTable() error {
 	query := `create table if not exists profit(
 	profit_id serial primary key,

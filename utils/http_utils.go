@@ -18,7 +18,7 @@ func MakeHTTPHandlerFunc(apiFunc common.ApiFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := apiFunc(ctx, w, r); err != nil {
 			WriteJson(w, http.StatusAccepted, models.APIError{
-				Error: err,
+				Error: err.Error(),
 			})
 		}
 	}

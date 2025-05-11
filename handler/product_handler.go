@@ -47,12 +47,12 @@ func handlePatchProduct(w http.ResponseWriter, r *http.Request, s common.Store, 
 	var product models.Product
 	if err := json.NewDecoder(r.Body).Decode(&product); err != nil {
 		return utils.WriteJson(w, http.StatusInternalServerError, models.APIError{
-			Error: err,
+			Error: err.Error(),
 		})
 	}
 	if err := s.ModifyProduct(id, product.ProductName, product.ProductBuyPrice, product.ProductSellPrice); err != nil {
 		return utils.WriteJson(w, http.StatusInternalServerError, models.APIError{
-			Error: err,
+			Error: err.Error(),
 		})
 	}
 	return utils.WriteJson(w, http.StatusOK, product)
@@ -72,7 +72,7 @@ func HandleGetProducts(w http.ResponseWriter, r *http.Request, s common.Store) e
 	products, err := s.GetAllProducts()
 	if err != nil {
 		return utils.WriteJson(w, http.StatusBadRequest, models.APIError{
-			Error: err,
+			Error: err.Error(),
 		})
 	}
 	return utils.WriteJson(w, http.StatusAccepted, products)
@@ -82,13 +82,13 @@ func HandlePostProducts(w http.ResponseWriter, r *http.Request, s common.Store) 
 	var product models.Product
 	if err := json.NewDecoder(r.Body).Decode(&product); err != nil {
 		return utils.WriteJson(w, http.StatusBadRequest, models.APIError{
-			Error: err,
+			Error: err.Error(),
 		})
 	}
 	err := s.AddProduct(product.ProductName, product.ProductBuyPrice, product.ProductSellPrice)
 	if err != nil {
 		return utils.WriteJson(w, http.StatusInternalServerError, models.APIError{
-			Error: err,
+			Error: err.Error(),
 		})
 	}
 	return utils.WriteJson(w, http.StatusCreated, map[string]string{
@@ -100,7 +100,7 @@ func HandleDeleteProduct(w http.ResponseWriter, r *http.Request, s common.Store,
 	err := s.DeleteProduct(id)
 	if err != nil {
 		return utils.WriteJson(w, http.StatusInternalServerError, models.APIError{
-			Error: err,
+			Error: err.Error(),
 		})
 	}
 	return utils.WriteJson(w, http.StatusNoContent, models.APISuccessMessage{
